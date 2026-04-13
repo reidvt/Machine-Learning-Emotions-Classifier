@@ -1,63 +1,68 @@
-Machine Learning Emotions Classifier
-This repository contains a machine learning project focused on classifying emotions and sentiment from text data using the GoEmotions dataset. The project implements multi-label emotion classification, 3-class sentiment analysis, and a custom "Trust" metric.
+# 🧠 ML Emotion & Trust Classifier
 
-Project Overview
-The core objective is to analyze and categorize human emotions expressed in text. By leveraging a large-scale dataset of Reddit comments, the models are trained to recognize 27 distinct emotions plus a neutral category.
+> Multi-label emotion classification, sentiment analysis, and trust detection from text — powered by GoEmotions + Explainable AI.
 
-Key Features
-3-Class Sentiment Classification: Maps emotions into Positive, Negative, and Neutral/Mixed buckets.
+![Python](https://img.shields.io/badge/Python-3.x-blue?style=flat-square&logo=python)
+![scikit-learn](https://img.shields.io/badge/scikit--learn-ML-orange?style=flat-square&logo=scikit-learn)
+![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)
 
-Trust Metric: A specialized classification grouping emotions into High, Medium, and Low Trust categories.
+---
 
-Interpretability: Integration with SHAP and LIME to explain model predictions and highlight influential words.
+## Overview
 
-Performance Metrics: Detailed evaluation using Accuracy, Precision, Recall, F1-Score, and ROC-AUC curves.
+This project analyzes and categorizes human emotions expressed in text using the **GoEmotions** dataset — 211,225 labeled Reddit comments. It implements three classification tasks:
 
-Dataset
-The project utilizes the GoEmotions dataset (211,225 Reddit comments).
+- **27-class emotion detection** (multi-label)
+- **3-class sentiment analysis** (Positive / Negative / Neutral)
+- **Custom Trust metric** (High / Medium / Low Trust)
 
-Total Labels: 28 (27 emotions + 1 neutral).
+Explainability is a core component: SHAP and LIME are used to surface which words drive each prediction.
 
-Sentiment Mapping: * Positive: Admiration, Amusement, Approval, Caring, Desire, Excitement, Gratitude, Joy, Love, Optimism, Pride, Relief.
+---
 
-Negative: Anger, Annoyance, Disappointment, Disapproval, Disgust, Embarrassment, Fear, Grief, Nervousness, Remorse, Sadness.
+## Key Results
 
-Neutral/Mixed: Confusion, Curiosity, Realization, Surprise, Neutral.
+| Task | Accuracy |
+|---|---|
+| Sentiment Classification | ~61.2% |
+| Trust Classification | ~62.1% |
 
-Methodology
-1. Data Preprocessing
-Text cleaning and tokenization.
+Evaluated on a held-out 20% test split.
 
-Feature extraction using TF-IDF Vectorization (max 20,000 features, n-grams 1-2).
+---
 
-Handling class imbalance using class_weight='balanced'.
+## Dataset
 
-2. Modeling
-Logistic Regression: Primary model for 3-class sentiment and trust classification.
+**GoEmotions** — 211,225 human-annotated Reddit comments across 28 labels (27 emotions + Neutral).
 
-One-Vs-Rest Classifier: Implemented for the complex multi-label emotion task.
+### Sentiment Mapping
 
-3. Evaluation
-Models were evaluated on a 20% test split:
+| Sentiment | Emotions |
+|---|---|
+| **Positive** | Admiration, Amusement, Approval, Caring, Desire, Excitement, Gratitude, Joy, Love, Optimism, Pride, Relief |
+| **Negative** | Anger, Annoyance, Disappointment, Disapproval, Disgust, Embarrassment, Fear, Grief, Nervousness, Remorse, Sadness |
+| **Neutral / Mixed** | Confusion, Curiosity, Realization, Surprise, Neutral |
 
-Sentiment Accuracy: ~61.23%
+---
 
-Trust Accuracy: ~62.07%
+## Methodology
 
-Installation & Usage
-Prerequisites
-Python 3.x
+### 1. Data Preprocessing
+- Text cleaning and tokenization
+- TF-IDF Vectorization (max 20,000 features, unigrams + bigrams)
+- Class imbalance handled via `class_weight='balanced'`
 
-pandas, numpy, scikit-learn, matplotlib
+### 2. Modeling
+- **Logistic Regression** — primary model for sentiment and trust classification
+- **One-vs-Rest Classifier** — used for multi-label emotion detection across all 27 classes
 
-shap, lime
+### 3. Explainability
+- **SHAP** — global feature importance; identifies which words most influence predictions across the dataset
+- **LIME** — local explanations; diagnoses individual misclassifications at the sample level
 
-Running the Project
-Ensure combined.csv is in your project directory.
+### 4. Evaluation
+- Accuracy, Precision, Recall, F1-Score, ROC-AUC curves
 
-Open ML_Emotion_Project_Notebook.ipynb in Google Colab or a local Jupyter environment.
+---
 
-Execute the cells to train the models and view the SHAP/LIME visualizations.
-
-Author
-Reid VanTrieste
+## Project Structure
