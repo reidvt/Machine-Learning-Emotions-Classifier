@@ -1,0 +1,56 @@
+﻿Reid VanTrieste
+Dr. Bandara
+CPSC4360 Machine Learning
+12/11/2025
+Emotion Classification Using Logistic Regression
+Introduction
+Classifying emotion has become increasingly important today as humans begin to communicate more and more with artificial intelligence. Across social media moderation, customer support analytics, chatbots, and mental health monitoring, having the ability to detect emotional tone and trust levels in users’ texts enables safer interactions. 
+ Using a large dataset of human-generated text, Combine.csv, three emotion classification tasks are being looked at. First, the classifier is going to classify based on 27 emotions and neutral. Then, the classifier is predicting whether the sentence is positive, negative, or neutral. Lastly, the model looks to predict the trust level of the sentences, grading them as high, medium, and low trust. In order for the model to properly classify emotion, TF-IDF is utilized to interpret the sentence and convert it into numbers, and it counts how often each word appears in a sentence and how rare or important the word is across the dataset. Multinomial Logistic Regression is used for classifying positive/negative and trust, whereas One-vs-Rest Logistic Regression is used for the 27 emotions classification. The model is being evaluated on accuracy, recall, precision, F1-score, and ROC. Lastly, the interpretation of the model is being done using SHAP and LIME. SHAP explains how much each feature contributes to predictions across the dataset, and LIME shows why the model predicted a particular label for a sentence. Together, they help paint a picture of what the model is learning and why it makes its decisions. 
+        Combined.csv contains over 210,000 text segments from online sources, each annotated with a binary for each of the 27 emotions. Most samples in the dataset contain one or two emotions, but some contain more. There are very few samples that contain neutral, and these are excluded for certain tasks. 
+Dataset Description 
+        To simplify when predicting the tone of the sentence, the 27 emotions are grouped into three categories: Positive(admiration, excitement, gratitude, optimism, etc), Negative(anger, annoyance, disappointment, etc), and Anger(confusion, curiosity, realization, etc). Each sentence is mapped as “positive” or “negative”, and in the case of a neutral sentence, a sentence is mapped as “neutral_mixed”.   
+        Similarly, for the trustworthiness of a sentence, the 27 emotions were mapped as high trust, medium trust, and low trust. For ties, the model prioritizes the highest trust of the options.   
+Figure 2: Trust mapping
+Methodology
+        To classify emotion accurately across all three tasks, TF-IDF is used to extract the features from the dataset, and then moved into the Logistic Regression model for prediction. TF-IDF was chosen due to its ability to emphasize unique words rather than filler words. When predicting positive or negative, and trust level, multinomial Logistic Regression was applied due to the task requiring a prediction of one of three class possibilities. A different approach is required for classifying each emotion. One-vs-Rest Logistic Regression is used to classify the 27 emotions using a multi-label technique, where each emotion has its own binary classifier, which tracks whether or not that specific emotion is present in the sentence. This technique is required because sentences may contain multiple emotions, so tracking all emotions individually is necessary. 
+        Data is then split into training and testing splits using an 80/20 split. Imbalance in classes is handled using the “class_weight=’balanced’” parameter to ensure less common emotions and trust levels are still being classified equally. Each model is evaluated using accuracy, precision, recall, F1-score, confusion matrices, and ROC curves. These metrics help measure not only how well the model predicts each class, but also how it performs across the entire dataset. 
+        Lastly, the model is interpreted using Logistic Regression coefficients, SHAP, and LIME. 
+Results
+        Using Multinomial Logistic Regression, the positive or negative classifier achieved an overall accuracy of 61.23%. The performance was not consistent across classes. The positive class performed the strongest overall, achieving high precision and F1-score. The negative class showed less strong results, often mistaken for the neutral class, but overall performed well. The neutral class performed the worst, primarily due to positive and negative tones often having overlap and the ambiguous nature of the neutral class. 
+        Overall, these results demonstrate that the model can reliably recognize strong emotional signals, but is less strong in classifying negative or neutral tones. 
+  
+
+FIG 3: Confusion matrix for Positive or negative classifier
+  
+
+FIG 4: ROC curves for positive or negative classifier
+        The trust classifier performed similarly to the positive or negative classification, reaching 62.70% accuracy. High trust was the most accurately predicted class, likely due to sentences expressing these emotions tend to be more evident, as well as ties going to the higher trusted option. Low trust performed the next best, which follows a similar pattern as the previous task. The model struggled to predict the medium trust class because the emotions are less evident through text. Despite this, the classifier proved to distinguish between high trust and low trust very well, which is vital in evaluating safety for communication between the AI and the user. 
+  
+
+FIG 5: Confusion matrix for trust classifier
+  
+
+FIG 6: ROC curves for trust classifier
+        The multi-label classifier did not perform as well as the multinomial classifier, producing a micro F1-score of .306 and a macro F1-score of .273. These numbers are significantly lower, but can be traced back to the overlap of emotions. Emotions like “anger” and “annoyance” may present themselves similarly in a sentence, making classification increasingly difficult. Also, Logistic Regression is still struggling with class imbalance. Although steps were taken to mitigate the effects of an imbalance set, Logistic Regression still struggled to classify emotions like ‘remorse’ and ‘fear’ due to their only appearing a few hundred times. The micro F1-score reflects that the classifier is stronger when predicting frequent emotions, whereas less-seen emotions were less successful. 
+  
+
+FIG 7: Table of multi-label F1-scores
+Model Interpretation
+        The classifier was picking up significant and intuitive emotional indicators, according to model interpretation methodologies. terms like "love," "great," and "amazing" heavily pushed the model toward positive predictions for sentiment categorization, while terms like "hate," "terrible," and "sadly" drove predictions toward negative sentiment, according to the Logistic Regression coefficients. Curiosity-based terms like "wondering," "realized," or "confused" were frequently linked to neutral or mixed predictions.
+
+
+LIME explanations shed light on the model's processing of certain sentences. For instance, LIME emphasized how competing signals affected the final prediction if a sentence included one very pleasant word along with modest discomfort or negativity. This made it easier to see why some sentences—especially those that expressed conflicting emotions—were incorrectly categorized. 
+        SHAP values showed how important each word was to the model across many predictions. Most SHAP contributions were small, highlighting TF-IDF features; however, some words had strong importance when deciding between positive and negative tone. This confirms the model’s focus on primary emotions rather than noise. 
+  
+  
+
+FIG 8: Coefficient table for positive/negative
+  
+
+FIG 9: LIME explanation visualization  
+FIG 10: SHAP summary plot
+Discussion
+        Across all the classifications, Logistic Regression provided strong and explainable baseline results. The positive or negative classifier reliably recognized cues, and the trust classifier demonstrated a strong distinction between high-trust and low-trust tones. The multi-label classifier struggled more, yet still was able to detect common emotions with success. 
+        With some emotions appearing thousands of times, and others appearing only a few times, the class imbalance won the battle in multi-label classification, regardless of attempts to add weights. TF-IDF also poses limitations due to only counting the number of times a word comes up in a sentence and the importance of each word across the set. It does not take into account word order, context, or other details that may help when classifying. 
+Conclusion
+        This project displays the importance of classifying tones when conversing with AIs. Humans are surrounded by AI chatbots, and being able to confirm that these models can understand tone, emotion, and trust levels is important.
