@@ -66,3 +66,12 @@ Evaluated on a held-out 20% test split.
 ---
 
 ## Project Structure
+| Path | Description |
+| :--- | :--- |
+| **`scripts/`** | Standalone utility scripts for data loading and quick experiments. |
+| **`notebooks/`** | Jupyter notebooks for Exploratory Data Analysis (EDA) and SHAP/LIME visualizations. |
+| **`src/`** | Core logic including the `EmotionsClassifier.py` and preprocessing modules. |
+| **`models/`** | Directory to store serialized model files (e.g., `.pkl` or `.joblib`). |
+| **`data/`** | (Local only) Storage for the GoEmotions Reddit dataset. |
+| **`ML_ Emotion Classifier Report.txt`** | Detailed performance analysis and classification metrics. |
+| **`requirements.txt`** | List of dependencies (scikit-learn, SHAP, LIME, etc.) for easy setup. |
